@@ -4,7 +4,7 @@ from django.shortcuts import resolve_url as r
 from django.test import TestCase
 from django.utils import timezone
 
-from .models import Question
+from .models import Choice, Question
 
 
 class IndexTest(TestCase):
@@ -37,7 +37,12 @@ class IndexTest(TestCase):
 
 class DetailTest(TestCase):
     def setUp(self):
-        Question.objects.create(text='What is your favorite color?')
+        q = Question.objects.create(text='What is your favorite color?')
+
+        q.choices.create(text='Red')
+        q.choices.create(text='Blue')
+        q.choices.create(text='None')
+
         self.resp = self.client.get(r('detail', 1))
 
     def test_get(self):
@@ -50,9 +55,10 @@ class DetailTest(TestCase):
         expected = [
             (1, '<h1>What is your favorite color?'),
             (1, '<ul'),
-            #(1, '<li>Red</li>'),
-            #(1, '<li>Blue</li>'),
-            #(1, '<li>None</li>'),
+            (1, '<li>Red</li>'),
+            (1, '<li>Blue</li>'),
+            (1, '<li>None</li>'),
+            (1, '</ul>')
         ]
 
         for count, tag in expected:
@@ -76,3 +82,20 @@ class QuestionModelTest(TestCase):
     def test_pub_date_auto_now(self):
         field = Question._meta.get_field('pub_date')
         self.assertTrue(field.auto_now)
+
+
+class ChoiceModelTest(TestCase):
+    def setUp(self):
+        self.question = Question.objects.create(
+            text='What is your favorite color?')
+        self.choice = Choice.objects.create(
+            text='Red', question=self.question)
+
+    def test_create(self):
+        self.assertTrue(Choice.objects.exists())
+
+    def test_question(self):
+        self.assertIsInstance(self.choice.question, Question)
+
+    def test_str(self):
+        self.assertEqual('Red', str(self.choice))

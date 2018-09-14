@@ -4,8 +4,8 @@ from .models import Question
 
 
 def index(request):
-    return render(request, 'core/index.html',
-                  {'questions': Question.objects.all()})
+    context = {'questions': Question.objects.all()}
+    return render(request, 'core/index.html', context)
 
 
 def detail(request, question_id):

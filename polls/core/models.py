@@ -7,3 +7,12 @@ class Question(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Choice(models.Model):
+    text = models.CharField(max_length=100,)
+    question = models.ForeignKey(
+        Question, on_delete=models.PROTECT, related_name='choices')
+
+    def __str__(self):
+        return self.text

@@ -1,7 +1,7 @@
 <h1>{{ question.text }}</h1>
 
 <ul>
-    {% for choice in question.choices %}
-    <li>{{ choice.text }}</li>
+    {% for choice in question.choices.all %}
+    <li>{{ choice }}</li>
     {% endfor %}
 </ul>
