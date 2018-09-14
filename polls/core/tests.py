@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
@@ -9,12 +9,9 @@ from .models import Question
 
 class IndexTest(TestCase):
     def setUp(self):
-        Question.objects.create(
-            text='What is your favorite color?', pub_date=timezone.now())
-        Question.objects.create(
-            text='Who is going to win the election?', pub_date=timezone.now())
-        Question.objects.create(
-            text='Do you believe in aliens?', pub_date=timezone.now())
+        Question.objects.create(text='What is your favorite color?')
+        Question.objects.create(text='Who is going to win the election?')
+        Question.objects.create(text='Do you believe in aliens?')
 
         self.resp = self.client.get(r('index'))
 
@@ -40,9 +37,7 @@ class IndexTest(TestCase):
 
 class DetailTest(TestCase):
     def setUp(self):
-        Question.objects.create(
-            text='What is your favorite color?', pub_date=timezone.now()
-        )
+        Question.objects.create(text='What is your favorite color?')
         self.resp = self.client.get(r('detail', 1))
 
     def test_get(self):
@@ -67,16 +62,17 @@ class DetailTest(TestCase):
 
 class QuestionModelTest(TestCase):
     def setUp(self):
-        self.question = Question.objects.create(
-            text="What's my favorite color?",
-            pub_date=timezone.now()
-        )
+        self.obj = Question.objects.create(text="What's my favorite color?")
 
     def test_create(self):
         self.assertTrue(Question.objects.exists())
 
-    def test_pub_date(self):
-        self.assertIsInstance(self.question.pub_date, datetime)
-
     def test_str(self):
-        self.assertEqual("What's my favorite color?", str(self.question))
+        self.assertEqual("What's my favorite color?", str(self.obj))
+
+    def test_pub_date(self):
+        self.assertIsInstance(self.obj.pub_date, date)
+
+    def test_pub_date_auto_now(self):
+        field = Question._meta.get_field('pub_date')
+        self.assertTrue(field.auto_now)
