@@ -38,4 +38,5 @@ jobs:
           heroku_app_name: "polls-ronaldooliveira"
           heroku_email: "rfdeoliveira.pmsp@gmail.com"
           remote_branch: master
-          dontuseforce: 1
+          branch: master
+          dontuseforce: false
