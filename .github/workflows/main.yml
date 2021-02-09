@@ -11,7 +11,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.8, 3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -37,6 +37,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "polls-ronaldooliveira"
           heroku_email: "rfdeoliveira.pmsp@gmail.com"
-          remote_branch: master
-          branch: master
-          dontuseforce: false
+          remote_branch: "master"
+          branch: "master"
