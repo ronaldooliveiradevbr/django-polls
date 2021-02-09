@@ -1,4 +1,4 @@
-name: Deploy
+name: Django Polls CI
 
 on:
   push:
@@ -38,3 +38,4 @@ jobs:
           heroku_app_name: "polls-ronaldooliveira"
           heroku_email: "rfdeoliveira.pmsp@gmail.com"
           remote_branch: master
+          dontuseforce: 1
