@@ -68,7 +68,7 @@ class DetailTest(TestCase):
 class NotFoundDetailGet(TestCase):
     def test_not_found(self):
         response = self.client.get(r('detail', 1))
-        assert response.status_code == 404
+        self.assertEqual(response.status_code, 404)
 
 
 class QuestionModelTest(TestCase):
@@ -109,10 +109,13 @@ class ChoiceModelTest(TestCase):
 class ResultsGetTest(TestCase):
     def test_get(self):
         response = self.client.get(r('results', 1))
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
 
 
 class VoteGetTest(TestCase):
     def test_get(self):
         response = self.client.get(r('vote', 1))
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
+
+    def test_broken(self):
+        self.assertTrue(False)
