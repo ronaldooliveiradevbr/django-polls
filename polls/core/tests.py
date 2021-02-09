@@ -2,9 +2,8 @@ from datetime import date
 
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
-from django.utils import timezone
 
-from .models import Choice, Question
+from polls.core.models import Choice, Question
 
 
 class IndexTest(TestCase):
@@ -25,9 +24,9 @@ class IndexTest(TestCase):
         expected = [
             (1, '<ul'),
             (3, '<li>'),
-            (1, 'href="{}">{}'.format('/polls/1/', 'What is your favorite color?')),
-            (1, 'href="{}">{}'.format('/polls/2/', 'Who is going to win the election?')),
-            (1, 'href="{}">{}'.format('/polls/3/', 'Do you believe in aliens?')),
+            (1, 'href="{}">{}'.format(r('detail', 1), 'What is your favorite color?')),
+            (1, 'href="{}">{}'.format(r('detail', 2), 'Who is going to win the election?')),
+            (1, 'href="{}">{}'.format(r('detail', 3), 'Do you believe in aliens?')),
         ]
 
         for count, tag in expected:
@@ -66,6 +65,12 @@ class DetailTest(TestCase):
                 self.assertContains(self.resp, tag, count)
 
 
+class NotFoundDetailGet(TestCase):
+    def test_not_found(self):
+        response = self.client.get(r('detail', 1))
+        assert response.status_code == 404
+
+
 class QuestionModelTest(TestCase):
     def setUp(self):
         self.obj = Question.objects.create(text="What's my favorite color?")
@@ -99,3 +104,15 @@ class ChoiceModelTest(TestCase):
 
     def test_str(self):
         self.assertEqual('Red', str(self.choice))
+
+
+class ResultsGetTest(TestCase):
+    def test_get(self):
+        response = self.client.get(r('results', 1))
+        assert response.status_code == 200
+
+
+class VoteGetTest(TestCase):
+    def test_get(self):
+        response = self.client.get(r('vote', 1))
+        assert response.status_code == 200
