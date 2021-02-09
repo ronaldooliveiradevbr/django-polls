@@ -27,7 +27,7 @@ jobs:
       run: |
         make test
 
-  build:
+  deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -38,4 +38,3 @@ jobs:
           heroku_app_name: "polls-ronaldooliveira"
           heroku_email: "rfdeoliveira.pmsp@gmail.com"
           remote_branch: "master"
-          branch: "master"

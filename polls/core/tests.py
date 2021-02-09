@@ -116,6 +116,3 @@ class VoteGetTest(TestCase):
     def test_get(self):
         response = self.client.get(r('vote', 1))
         self.assertEqual(response.status_code, 200)
-
-    def test_broken(self):
-        self.assertTrue(False)
